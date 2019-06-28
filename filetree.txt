@@ -1,0 +1,194 @@
+Folder PATH listing
+Volume serial number is BE92-1A83
+C:.
+│   filetree.txt
+│   README.md
+│   
+├───doc
+│   │   DataBaseWebReport.md
+│   │   
+│   └───assets
+│           addmajor.jpg
+│           addschool.jpg
+│           addstu.jpg
+│           admin.jpg
+│           admin2.jpg
+│           DBW.jpg
+│           deleteclassroom.jpg
+│           deleteprecourse.jpg
+│           deletescorelist.jpg
+│           editcourse.jpg
+│           editmajor.jpg
+│           editteacher.jpg
+│           index.jpg
+│           searchresultpage.jpg
+│           signin.jpg
+│           signup.png
+│           student.jpg
+│           teacher.jpg
+│           
+├───mysite
+│   │   manage.py
+│   │   
+│   ├───.idea
+│   │   │   misc.xml
+│   │   │   modules.xml
+│   │   │   mysite.iml
+│   │   │   workspace.xml
+│   │   │   
+│   │   └───inspectionProfiles
+│   ├───FDUSystem
+│   │   │   admin.py
+│   │   │   apps.py
+│   │   │   models.py
+│   │   │   urls.py
+│   │   │   views.py
+│   │   │   __init__.py
+│   │   │   
+│   │   ├───migrations
+│   │   │   │   0001_initial.py
+│   │   │   │   0002_auto_20190425_0318.py
+│   │   │   │   0003_auto_20190425_0319.py
+│   │   │   │   0004_auto_20190425_0320.py
+│   │   │   │   0005_auto_20190425_0327.py
+│   │   │   │   __init__.py
+│   │   │   │   
+│   │   │   └───__pycache__
+│   │   │           0001_initial.cpython-36.pyc
+│   │   │           0002_auto_20190425_0318.cpython-36.pyc
+│   │   │           0003_auto_20190425_0319.cpython-36.pyc
+│   │   │           0004_auto_20190425_0320.cpython-36.pyc
+│   │   │           0005_auto_20190425_0327.cpython-36.pyc
+│   │   │           __init__.cpython-36.pyc
+│   │   │           
+│   │   ├───templatetags
+│   │   │   │   index.py
+│   │   │   │   __init__.py
+│   │   │   │   
+│   │   │   └───__pycache__
+│   │   │           index.cpython-36.pyc
+│   │   │           __init__.cpython-36.pyc
+│   │   │           
+│   │   └───__pycache__
+│   │           admin.cpython-36.pyc
+│   │           apps.cpython-36.pyc
+│   │           models.cpython-36.pyc
+│   │           urls.cpython-36.pyc
+│   │           views.cpython-36.pyc
+│   │           __init__.cpython-36.pyc
+│   │           
+│   ├───mysite
+│   │   │   settings.py
+│   │   │   urls.py
+│   │   │   wsgi.py
+│   │   │   __init__.py
+│   │   │   
+│   │   └───__pycache__
+│   │           settings.cpython-36.pyc
+│   │           urls.cpython-36.pyc
+│   │           wsgi.cpython-36.pyc
+│   │           __init__.cpython-36.pyc
+│   │           
+│   ├───Static
+│   │   └───bootstrap
+│   │       ├───assets
+│   │       │   │   bg.jpg
+│   │       │   │   fudan_logo.png
+│   │       │   │   title_logo.png
+│   │       │   │   
+│   │       │   ├───brand
+│   │       │   │       bootstrap-outline.svg
+│   │       │   │       bootstrap-punchout.svg
+│   │       │   │       bootstrap-solid.svg
+│   │       │   │       
+│   │       │   ├───css
+│   │       │   │   │   docs.min.css
+│   │       │   │   │   docs.min.css.map
+│   │       │   │   │   ie10-viewport-bug-workaround.css
+│   │       │   │   │   
+│   │       │   │   └───src
+│   │       │   │           docs.css
+│   │       │   │           pygments-manni.css
+│   │       │   │           
+│   │       │   ├───flash
+│   │       │   │       ZeroClipboard.swf
+│   │       │   │       
+│   │       │   ├───img
+│   │       │   │       components.png
+│   │       │   │       devices.png
+│   │       │   │       expo-lyft.jpg
+│   │       │   │       expo-newsweek.jpg
+│   │       │   │       expo-riot.jpg
+│   │       │   │       expo-vogue.jpg
+│   │       │   │       sass-less.png
+│   │       │   │       
+│   │       │   └───js
+│   │       │       │   customize.min.js
+│   │       │       │   docs.min.js
+│   │       │       │   ie-emulation-modes-warning.js
+│   │       │       │   ie10-viewport-bug-workaround.js
+│   │       │       │   ie8-responsive-file-warning.js
+│   │       │       │   raw-files.min.js
+│   │       │       │   
+│   │       │       ├───src
+│   │       │       │       application.js
+│   │       │       │       customizer.js
+│   │       │       │       
+│   │       │       └───vendor
+│   │       │               anchor.min.js
+│   │       │               autoprefixer.js
+│   │       │               Blob.js
+│   │       │               FileSaver.js
+│   │       │               holder.min.js
+│   │       │               jquery.min.js
+│   │       │               jszip.min.js
+│   │       │               less.min.js
+│   │       │               uglify.min.js
+│   │       │               ZeroClipboard.min.js
+│   │       │               
+│   │       ├───css
+│   │       │       add.css
+│   │       │       bootstrap-theme.css
+│   │       │       bootstrap-theme.css.map
+│   │       │       bootstrap-theme.min.css
+│   │       │       bootstrap-theme.min.css.map
+│   │       │       bootstrap.css
+│   │       │       bootstrap.css.map
+│   │       │       bootstrap.min.css
+│   │       │       bootstrap.min.css.map
+│   │       │       edit.css
+│   │       │       home.css
+│   │       │       index.css
+│   │       │       search.css
+│   │       │       signin.css
+│   │       │       signup.css
+│   │       │       theme.css
+│   │       │       
+│   │       ├───fonts
+│   │       │       glyphicons-halflings-regular.eot
+│   │       │       glyphicons-halflings-regular.svg
+│   │       │       glyphicons-halflings-regular.ttf
+│   │       │       glyphicons-halflings-regular.woff
+│   │       │       glyphicons-halflings-regular.woff2
+│   │       │       
+│   │       └───js
+│   │               bootstrap.js
+│   │               bootstrap.min.js
+│   │               home.js
+│   │               npm.js
+│   │               
+│   └───templates
+│           add.html
+│           edit.html
+│           home.html
+│           index.html
+│           resetpsd.html
+│           search.html
+│           signin.html
+│           signup.html
+│           test.txt
+│           theme.html
+│           
+└───mysql
+        pj_data_insert.sql
+        

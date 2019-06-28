@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../Static/bootstrap/assets/fudan_logo.png">
+
+    <title>home</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../Static/bootstrap/css/bootstrap.css" rel="stylesheet">
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <link href="../Static/bootstrap/assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="../Static/bootstrap/css/home.css" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="../Static/assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="../Static/bootstrap/assets/js/ie-emulation-modes-warning.js"></script>
+    <script src="../Static/bootstrap/js/home.js"></script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+
+<body>
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a href="./index.html" style="float: left; margin-left:0px;margin-top: 2px">
+                <img src="../Static/bootstrap/assets/title_logo.png" style="width: 148px; height: 45px">
+            </a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a>Welcome, {{ request.user }}</a></li>
+                <li><a href="#">Settings</a></li>
+                <li><a href="#">Profile</a></li>
+                <li><a href="./index.html" type="submit" name="signout">Sign Out</a></li>
+            </ul>
+            <form class="navbar-form navbar-right">
+                <input type="text" class="form-control" placeholder="Search..">
+            </form>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar" style="display: inline; cursor: pointer">
+            <ul class="nav nav-sidebar">
+                {% if perms.FDUSystem.view_school %}
+                    <li><a onclick="showSchool()">School</a></li>
+                {% endif %}
+                {% if perms.FDUSystem.view_major %}
+                    <li><a onclick="showMajor()">Major</a></li>
+                {% endif %}
+                {% if perms.FDUSystem.view_teacher %}
+                    <li><a onclick="showTeacher()">Teacher</a></li>
+                {% endif %}
+                {% if perms.FDUSystem.view_student %}
+                    <li><a onclick="showStudent()">Student</a></li>
+                {% endif %}
+                {% if perms.FDUSystem.view_course %}
+                    <li><a onclick="showCourse()">Course</a></li>
+                {% endif %}
+                {% if perms.FDUSystem.view_classroom %}
+                    <li><a onclick="showClassroom()">Classroom</a></li>
+                {% endif %}
+                {% if perms.FDUSystem.view_precourse %}
+                    <li><a onclick="showPreCourse()">PreCourse</a></li>
+                {% endif %}
+                <!-- only shown for student-->
+                {% if request.user.extension.user_belong == 'student' %}
+                    <li><a onclick="showMyCourse()">My Select Course</a></li>
+                {% endif %}
+                <!-- only shown for teacher-->
+                {% if request.user.extension.user_belong == 'teacher' %}
+                    <li><a onclick="showMyTeachCourse()">My Teaching Course</a></li>
+                {% endif %}
+                <!-- only shown for admin-->
+                {% if request.user.extension.user_belong == 'admin' %}
+                    <li><a onclick="showScoreList()">Score List</a></li>
+                {% endif %}
+            </ul>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" style="display: none" id='School'>
+            <div>
+                <h2 class="sub-header" style="width: 200px; margin-left: 0px">School List</h2>
+                {% if perms.FDUSystem.delete_school %}
+                    <button type="submit" class="btn btn-xs btn-danger" form="school_form"
+                            onclick="window.onload=showSchool()"> Delete
+                    </button>
+                {% endif %}
+                {% if perms.FDUSytem.add_school %}
+                    <a href="/add/schools" class="btn btn-success btn-xs">Add</a>
+                {% endif %}
+                {% if perms.FDUSystem.view_school %}
+                    <button type="submit" class="btn btn-xs btn-warning" form="searchSchool" ONCLICK="showSchool()">
+                        Search
+                    </button>
+                {% endif %}
+            </div>
+
+            <form class="navbar-form navbar-right" id="searchSchool" method="post" action="/search/schools">
+                <input type="text" class="form-control" style="width:100px;" placeholder="School ID.."
+                       name="searchSchoolByID">
+                <input type="text" class="form-control" style="width:100px;" placeholder="Name.."
+                       name="searchSchoolByName">
+                {% csrf_token %}
+            </form>
+            <br>
+            <br>
+            <br>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>
+                            <input type="checkbox" id="select_all_school" onclick="selectAllSchool()">
+                        </th>
+                        <th>School ID</th>
+                        <th>School Name</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <form method="post" action="/deleteSelected/schools" id="school_form">
+                        {% for i in schools %}
+                            <tr>
+                                <td>
+                                    <input type="checkbox" name="select_one_school" class="select_one_school"
+                                           value="{{ i.school_id }}">
+                                </td>
+                                <td>
+                                    {% if perms.FDUSystem.edit_school %}
+                                        <a href="/edit/schools/?id={{ i.school_id }}"
+                                           name="school_id">{{ i.school_id }}</a>
+                                    {% else %}
+                                        {{ i.school_id }}
+                                    {% endif %}
+                                </td>
+                                <td>{{ i.school_name }}</td>
+                            </tr>
+                        {% endfor %}
+                        {% csrf_token %}
+                    </form>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" style="display: none" id='Major'>
+            <div>
+                <h2 class="sub-header">Major List</h2>
+                {% if perms.FDUSystem.delete_major %}
+                    <button type="submit" class="btn btn-xs btn-danger" form="major_form"
+                            onclick="window.reload=showMajor()">Delete
+                    </button>
+                {% endif %}
+                {% if perms.FDUSytem.add_major %}
+                    <a href="/add/majors" class="btn btn-success btn-xs">Add</a>
+                {% endif %}
+                {% if perms.FDUSystem.view_major %}
+                    <button type="submit" class="btn btn-xs btn-warning" form="searchMajor">Search</button>
+                {% endif %}
+            </div>
+            <form class="navbar-form navbar-right" method="post" id="searchMajor" action="/search/majors">
+                <input type="text" class="form-control" style="width:100px;" placeholder="ID.." name="searchMajorByID">
+                <input type="text" class="form-control" style="width:100px;" placeholder="Name.."
+                       name="searchMajorByName">
+                <input type="text" class="form-control" style="width:100px;" placeholder="School ID.."
+                       name="searchMajorBySchoolID">
+                {% csrf_token %}
+            </form>
+            <br>
+            <br>
+            <br>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>
+                            <input type="checkbox" id="select_all_major" onclick="selectAllMajor()">
+                        </th>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>School ID</th>
+                    </tr>
+                    </thead>
+                    <form method="post" action="/deleteSelected/majors" id="major_form">
+                        {% for i in majors %}
+                            <tbody>
+                            <tr>
+                                <td>
+                                    <input type="checkbox" name="select_one_major" value="{{ i.major_id }}"
+                                           class="select_one_major">
+                                </td>
+                                <td>
+                                    {% if perms.FDUSystem.edit_major %}
+                                        <a href="/edit/majors/?id={{ i.major_id }}"
+                                           name="major_id">{{ i.major_id }}</a>
+                                    {% else %}
+                                        {{ i.major_id }}
+                                    {% endif %}
+                                </td>
+                                <td>{{ i.major_name }}</td>
+                                <td>{{ i.major_school_id }}</td>
+                            </tr>
+                            </tbody>
+                        {% endfor %}
+                        {% csrf_token %}
+                    </form>
+                </table>
+            </div>
+        </div>
+        <div class=" col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" style="display: none" id='Teacher'>
+            <div>
+                <h2 class="sub-header">Teacher List</h2>
+                {% if perms.FDUSystem.delete_teacher %}
+                    <button type="submit" class="btn btn-xs btn-danger" form="teacher_form" onclick="showTeacher()">
+                        Delete
+                    </button>
+                {% endif %}
+                {% if perms.FDUSytem.add_teacher %}
+                    <a href="/add/teachers" class="btn btn-success btn-xs">Add</a>
+                {% endif %}
+                {% if perms.FDUSystem.view_teacher %}
+                    <button type="submit" class="btn btn-xs btn-warning" form="searchTeacher">Search</button>
+                {% endif %}
+            </div>
+            <form class="navbar-form navbar-right" method="post" id="searchTeacher" action="/search/teachers">
+                {% csrf_token %}
+                <input type="text" class="form-control" style="width:100px;" placeholder="Name.."
+                       name="searchTeacherByName">
+                <select name="searchTeacherBySex" id="id_teacher_sex" class="form-control" style="width:100px;">
+                    <option value="male" selected="">男</option>
+                    <option value="female">女</option>
+                </select>
+                <input type="number" name="searchTeacherByAge" style="width:100px;" placeholder="Age" value="40"
+                       class="vIntegerField form-control" required autofocus>
+                <select name="searchTeacherByTitle" class="form-control" style="width:100px;">
+                    <option value="Assistant">助教</option>
+                    <option value="Lecturer">讲师</option>
+                    <option value="Associate Professor" selected="">副教授</option>
+                    <option value="Professor">教授</option>
+                </select>
+                <input type="text" class="form-control" style="width:100px;" placeholder="School ID.."
+                       name="searchTeacherBySchoolID">
+                {% csrf_token %}
+            </form>
+            <br>
+            <br>
+            <br>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>
+                            <input type="checkbox" id="select_all_teacher" onclick="selectAllTeacher()">
+                        </th>
+                        <th>Name</th>
+                        <th>Sex</th>
+                        <th>Age</th>
+                        <th>Title</th>
+                        <th>School ID</th>
+                    </tr>
+                    </thead>
+                    <form method="post" action="/deleteSelected/teachers" id="teacher_form">
+                        {% for i in teachers %}
+                            <tbody>
+                            <tr>
+                                <td>
+                                    <input type="checkbox" name="select_one_teacher" class="select_one_teacher"
+                                           value="{{ i.teacher_id }}">
+                                </td>
+                                <td>
+                                    {% if perms.FDUSystem.edit_teacher %}
+                                        <a href="/edit/teachers/?id={{ i.teacher_id }}"
+                                           name="teacher_id">{{ i.teacher_name }}</a>
+                                    {% else %}
+                                        {{ i.teacher_name }}
+                                    {% endif %}
+                                </td>
+                                <td>{{ i.teacher_sex }}</td>
+                                <td>{{ i.teacher_age }}</td>
+                                <td>{{ i.teacher_title }}</td>
+                                <td>{{ i.teacher_school_id }}</td>
+                            </tr>
+                            </tbody>
+                            {% csrf_token %}
+                        {% endfor %}
+                    </form>
+                </table>
+            </div>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" style="display: none" id='Student'>
+            <div>
+                <h2 class="sub-header">Student List</h2>
+                {% if perms.FDUSystem.delete_student %}
+                    <button type="submit" class="btn btn-xs btn-danger" form="student_form" onclick="showStudent()">
+                        Delete
+                    </button>
+                {% endif %}
+                {% if perms.FDUSytem.add_student %}
+                    <a href="/add/students" class="btn btn-success btn-xs">Add</a>
+                {% endif %}
+                {% if perms.FDUSystem.view_student %}
+                    <button type="submit" class="btn btn-xs btn-warning" form="searchStudent">Search</button>
+                {% endif %}
+            </div>
+            <form class="navbar-form navbar-right" method="post" action="/search/students" id="searchStudent">
+                <input type="text" class="form-control" placeholder="Name.." style="width:100px;"
+                       name="searchStudentByName">
+                <select name="searchStudentBySex" id="id_teacher_sex" class="form-control">
+                    <option value="male" selected="">男</option>
+                    <option value="female">女</option>
+                </select>
+                <input type="number" name="searchStudentByAge" style="width:100px;" placeholder="Age" value="20"
+                       class="vIntegerField form-control" required autofocus>
+                <input type="text" class="form-control" style="width:100px;" placeholder="Major.."
+                       name="searchStudentByMajorName">
+                {% csrf_token %}
+            </form>
+            <br>
+            <br>
+            <br>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>
+                            <input type="checkbox" id="select_all_student" onclick="selectAllStudent()">
+                        </th>
+                        <th>Name</th>
+                        <th>Sex</th>
+                        <th>Age</th>
+                        <th>Major</th>
+                    </tr>
+                    </thead>
+                    <form method="post" action="/deleteSelected/students" id="student_form">
+                        {% for i in students %}
+                            <tbody>
+                            <tr>
+                                <td>
+                                    <input type="checkbox" class="select_one_student" name="select_one_student"
+                                           value="{{ i.stu_id }}">
+                                </td>
+                                <td>
+                                    {% if perms.FDUSystem.edit_student %}
+                                        <a href="/edit/students/?id={{ i.stu_id }}"
+                                           name="student_id">{{ i.stu_name }}</a></td>
+                                    {% else %}
+                                        {{ i.stu_name }}
+                                    {% endif %}
+
+                                <td>{{ i.stu_sex }}</td>
+                                <td>{{ i.stu_age }}</td>
+                                <td>{{ i.stu_major }}</td>
+                            </tr>
+                            </tbody>
+                        {% endfor %}
+                        {% csrf_token %}
+                    </form>
+
+                </table>
+            </div>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" style="display: none" id='Course'>
+            <div>
+                <h2 class="sub-header">Course List</h2>
+                {% if perms.FDUSystem.delete_course %}
+                    <button type="submit" class="btn btn-xs btn-danger" form="course_form" onclick="showCourse()">
+                        Delete
+                    </button>
+                {% endif %}
+                {% if perms.FDUSytem.add_course %}
+                    <a href="/add/courses" class="btn btn-success btn-xs">Add</a>
+                {% endif %}
+                {% if perms.FDUSystem.view_course %}
+                    <button type="submit" class="btn btn-xs btn-warning" form="searchCourse">Search</button>
+                {% endif %}
+            </div>
+            <form class="navbar-form navbar-right" method="post" id="searchCourse" action="/search/courses">
+                <input type="text" class="form-control" style="width:100px;" name="searchByCourseID"
+                       placeholder="Course ID..">
+                <input type="text" class="form-control" style="width:100px;" name="searchByCourseName"
+                       placeholder="Course Name..">
+                <input type="number" placeholder="Capacity" value="40" name="searchByCapacity"
+                       class="vIntegerField form-control" style="width:100px;" required autofocus>
+                <input type="text" class="form-control" style="width:100px;" name="searchByClassroomID"
+                       placeholder="Classroom..">
+                <input type="text" class="form-control" style="width:100px;" name="searchByTeacherID"
+                       placeholder="Teacher ID..">
+                {% csrf_token %}
+            </form>
+            <br>
+            <br>
+            <br>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>
+                            <input type="checkbox" id="select_all_course" onclick="selectAllCourse()">
+                        </th>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Capacity</th>
+                        <th>Classroom</th>
+                        <th>Teacher ID</th>
+                    </tr>
+                    </thead>
+                    <form method="post" action="/deleteSelected/courses" id="course_form">
+                        {% for i in courses %}
+                            <tbody>
+                            <tr>
+                                <td>
+                                    <input type="checkbox" name="select_one_course" class="select_one_course"
+                                           value="{{ i.course_id }}">
+                                </td>
+                                <td>
+                                    {% if perms.FDUSystem.edit_course %}
+                                        <a href="/edit/courses/?id={{ i.course_id }}"
+                                           name="course_id">{{ i.course_id }}</a>
+                                    {% else %}
+                                        {{ i.course_id }}
+                                    {% endif %}
+
+                                </td>
+                                <td>{{ i.course_name }}</td>
+                                <td>{{ i.course_capacity }}</td>
+                                <td>{{ i.course_classroom_id_id }}</td>
+                                <td>{{ i.course_teacher_id_id }}</td>
+                            </tr>
+                            </tbody>
+                            {% csrf_token %}
+                        {% endfor %}
+                    </form>
+                </table>
+            </div>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" style="display: none" id='Classroom'>
+            <div>
+                <h2 class="sub-header">Classroom List</h2>
+                {% if perms.FDUSystem.delete_classroom %}
+                    <button type="submit" class="btn btn-xs btn-danger" form="classroom_form" onclick="showClassroom()">
+                        Delete
+                    </button>
+                {% endif %}
+                {% if perms.FDUSytem.add_classroom %}
+                    <a href="/add/classrooms" class="btn btn-success btn-xs">Add</a>
+                {% endif %}
+                {% if perms.FDUSystem.view_classroom %}
+                    <button type="submit" class="btn btn-xs btn-warning" form="searchClassroom">Search</button>
+                {% endif %}
+            </div>
+            <form class="navbar-form navbar-right" method="post" id="searchClassroom" action="/search/classrooms">
+                <input type="text" class="form-control" name="searchClassroomByID" style="width:100px;"
+                       placeholder="ID..">
+                <input type="number" placeholder="Capacity" value="40" style="width:100px;"
+                       name="searchClassroomByCapacity"
+                       class="vIntegerField form-control" required autofocus>
+                {% csrf_token %}
+            </form>
+            <br>
+            <br>
+            <br>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>
+                            <input type="checkbox" id="select_all_classroom" onclick="selectAllClassroom()">
+                        </th>
+                        <th>ID</th>
+                        <th>Capacity</th>
+                    </tr>
+                    </thead>
+                    <form method="post" action="/deleteSelected/classrooms" id="classroom_form">
+                        {% for i in classrooms %}
+                            <tbody>
+                            <tr>
+                                <td>
+                                    <input type="checkbox" name="select_one_classroom" class="select_one_classroom"
+                                           value="{{ i.classroom_id }}">
+                                </td>
+                                <td>
+                                    {% if perms.FDUSystem.edit_classroom %}
+                                        <a href="/edit/classrooms/?id={{ i.classroom_id }}"
+                                           name="classroom_id">{{ i.classroom_id }}</a>
+                                    {% else %}
+                                        {{ i.classroom_id }}
+                                    {% endif %}
+                                </td>
+                                <td>{{ i.classroom_capacity }}</td>
+                            </tr>
+                            </tbody>
+                            {% csrf_token %}
+                        {% endfor %}
+                    </form>
+                </table>
+            </div>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" style="display: none" id='PreCourse'>
+            <div>
+                <h2 class="sub-header">PreCourse List</h2>
+                {% if perms.FDUSystem.delete_precourse %}
+                    <button type="submit" class="btn btn-xs btn-danger" form="precourse_form" onclick="showPreCourse()">
+                        Delete
+                    </button>
+                {% endif %}
+                {% if perms.FDUSytem.add_precourse %}
+                    <a href="/add/precourses" class="btn btn-success btn-xs">Add</a>
+                {% endif %}
+                {% if perms.FDUSystem.view_precourse %}
+                    <button type="submit" class="btn btn-xs btn-warning" form="searchPrecourse">Search</button>
+                {% endif %}
+            </div>
+            <form class="navbar-form navbar-right" method="post" id="searchPrecourse" action="/search/precourses">
+
+                <input type="text" class="form-control" style="width:100px;" name="searchByID"
+                       placeholder="ID.." maxlength="11">
+                <input type="text" class="form-control" style="width:100px;" name="searchByCurName"
+                       placeholder="Cur Course Name..">
+                <input type="text" class="form-control" style="width:100px;" name="searchByPreName"
+                       placeholder="Pre Course Name..">
+                {% csrf_token %}
+            </form>
+            <br>
+            <br>
+            <br>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>
+                            <input type="checkbox" id="select_all_precourse" onclick="selectAllPreCourse()">
+                        </th>
+                        <th>ID</th>
+                        <th>Cur Course</th>
+                        <th>Pre Course</th>
+                    </tr>
+                    </thead>
+                    <form method="post" action="/deleteSelected/precourses" id="precourse_form">
+                        {% for a, b, c in precourses %}
+                            <tbody>
+                            <tr>
+                                <td>
+                                    <input type="checkbox" name="select_one_precourse" class="select_one_precourse"
+                                           value="{{ a.id }}">
+                                </td>
+                                <td>
+                                    {% if perms.FDUSystem.edit_precourse %}
+                                        <a href="/edit/precourses/?id={{ a.id }}" name="precourse_id">{{ a.id }}</a>
+                                    {% else %}
+                                        {{ a.id }}
+                                    {% endif %}
+                                </td>
+                                <td>{{ b.course_name }}</td>
+                                <td>{{ c.course_name }}</td>
+                            </tr>
+                            </tbody>
+                            {% csrf_token %}
+                        {% endfor %}
+                    </form>
+
+                </table>
+            </div>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" style="display: none" id='MyCourse'>
+            <div>
+                <h2 class="sub-header" style="width: 250px; margin-left: 0px">My Course List</h2>
+                <a href="/add/mycourses" class="btn btn-success btn-xs">Add</a>
+                <button type="submit" class="btn btn-xs btn-warning" form="searchMycourse" ONCLICK="showSchool()">
+                    Search
+                </button>
+
+            </div>
+            <form class="navbar-form navbar-right" method="post" action="/search/mycourses" id="searchMycourse">
+
+                <input type="text" class="form-control" placeholder="Course ID.." style="width:100px;"
+                       name="searchByCourseID">
+                <input type="text" class="form-control" placeholder="CName.." name="searchByCourseName"
+                       style="width:100px;">
+                <input type="text" class="form-control" placeholder="TName.." name="searchByTeacherName"
+                       style="width:100px;">
+                <input type="number" value="50" style="width:100px;"
+                       name="searchByScore"
+                       class="vIntegerField form-control" required autofocus>
+                {% csrf_token %}
+            </form>
+            <br>
+            <br>
+            <br>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>
+                            <input type="checkbox" id="select_all_mycourse" onclick="selectAllMyCourse()">
+                        </th>
+                        <th>Course ID</th>
+                        <th>Course Name</th>
+                        <th>Teacher Name</th>
+                        <th>Score</th>
+                    </tr>
+                    </thead>
+                    <form method="post" action="/deleteSelected/mycourses" id="mycourse_form">
+                        {% for a, b, c in mycourses %}
+                            <tbody>
+                            <tr>
+                                <td>
+                                    <input type="checkbox" name="select_one_mycourse" class="select_one_mycourse"
+                                           value="{{ request.extension.user_number }}">
+                                </td>
+                                <td>{{ b.course_id }}</td>
+                                <td>{{ b.course_name }}</td>
+                                <td>{{ c.teacher_name }}</td>
+                                <td>{{ a.sc_score }}</td>
+                            </tr>
+                            </tbody>
+                        {% endfor %}
+                        {% csrf_token %}
+                    </form>
+                </table>
+            </div>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" style="display: none" id='MyTeachCourse'>
+            <div>
+                <h2 class="sub-header" style="width: 300px; margin-left: 0px">My Teach Course List</h2>
+                {% if perms.FDUSystem.view_selectcourse %}
+                    <button type="submit" class="btn btn-xs btn-warning" form="searchMyteachcourse"
+                            ONCLICK="showSchool()">
+                        Search
+                    </button>
+                {% endif %}
+            </div>
+            <form class="navbar-form navbar-right" method="post" action="/search/myteachcourses"
+                  id="searchMyteachcourse">
+                <input type="text" class="form-control" style="width:100px;" name="searchMyteachcourseByCID"
+                       placeholder="Course ID..">
+                <input type="text" class="form-control" style="width:100px;" name="searchMyteachcourseByCName"
+                       placeholder="CName">
+                <input type="text" class="form-control" style="width:100px;" name="searchMyteachcourseBySID"
+                       placeholder="Student ID..">
+                <input type="text" class="form-control" style="width:100px;" name="searchMyteachcourseBySName"
+                       placeholder="StuName..">
+                <input type="number" value="50" style="width:100px;"
+                       name="searchByStuScore"
+                       class="vIntegerField form-control" required autofocus>
+                {% csrf_token %}
+            </form>
+            <br>
+            <br>
+            <br>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>
+                            <input type="checkbox" id="select_all_myteachcourse" onclick="selectAllMyTeachCourse()">
+                        </th>
+                        <th>Course ID</th>
+                        <th>Course Name</th>
+                        <th>Student ID</th>
+                        <th>Student Name</th>
+                        <th>Student Score</th>
+                    </tr>
+                    </thead>
+                    <form method="post" action="/deleteSelected/myteachcourses" id="myteachcourse_form">
+                        {% for a, b, c, d, e in myteachcourses %}
+                            <tbody>
+                            <tr>
+                                <td>
+                                    <input type="checkbox" name="select_one_myteachcourse"
+                                           class="select_one_myteachcourse"
+                                           value="{{ a }}{{ c }}">
+                                </td>
+                                <td>
+                                    <a href="edit/myteachcourses/?id1={{ a }}&id2={{ c }}"
+                                       name="myteachcourse_id">{{ a }}</a>
+                                </td>
+                                <td>{{ b }}</td>
+                                <td>{{ c }}</td>
+                                <td>{{ d }}</td>
+                                <td>{{ e }}</td>
+                            </tr>
+                            </tbody>
+                        {% endfor %}
+                        {% csrf_token %}
+                    </form>
+                </table>
+            </div>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" style="display: none" id='ScoreList'>
+            <div>
+                <h2 class="sub-header">Score List</h2>
+                {% if perms.FDUSystem.delete_selectcourse %}
+                    <button type="submit" class="btn btn-xs btn-danger" form="scorelist_form" onclick="showScoreList()">
+                        Delete
+                    </button>
+                {% endif %}
+                {% if perms.FDUSytem.add_selectcourse %}
+                    <a href="/add/scorelists" class="btn btn-success btn-xs">Add</a>
+                {% endif %}
+                {% if perms.FDUSystem.view_selectcourse %}
+                    <button type="submit" class="btn btn-xs btn-warning" form="searchScorelist">Search</button>
+                {% endif %}
+            </div>
+            <form class="navbar-form navbar-right" method="post" id="searchScorelist" action="search/scorelists">
+
+                <input type="text" class="form-control" style="width:100px;" name="searchScorelistByCourseID"
+                       placeholder="Course ID..">
+                <input type="text" class="form-control" style="width:100px;" name="searchScorelistByCourseName"
+                       placeholder="CName..">
+                <input type="text" class="form-control" style="width:100px;" name="searchScorelistByTeacherID"
+                       placeholder="Teacher ID..">
+                <input type="text" class="form-control" style="width:100px;" name="searchScorelistByTeacherName"
+                       placeholder="TName..">
+                <input type="text" class="form-control" style="width:100px;" name="searchScorelistByStudentID"
+                       placeholder="Student ID..">
+                <input type="text" class="form-control" style="width:100px;" name="searchScorelistByStudentName"
+                       placeholder="StuName..">
+                <input type="number" value="50" style="width:100px;"
+                       name="searchScorelistByScore"
+                       class="vIntegerField form-control" required autofocus>
+                {% csrf_token %}
+            </form>
+            <br>
+            <br>
+            <br>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>
+                            <input type="checkbox" id="select_all_scorelist" onclick="selectAllScoreList()">
+                        </th>
+                        <th>Course ID</th>
+                        <th>Course Name</th>
+                        <th>Teacher ID</th>
+                        <th>Teacher Name</th>
+                        <th>Student ID</th>
+                        <th>Student Name</th>
+                        <th>Student Score</th>
+                    </tr>
+                    </thead>
+                    <form method="post" action="/deleteSelected/scorelists" id="scorelist_form">
+                        {% for a, b, c, d, e, f, g in scorelist %}
+                            <tbody>
+                            <tr>
+                                <td>
+                                    <input type="checkbox" name="select_one_scorelist" class="select_one_scorelist"
+                                           value="{{ a }},{{ e }}">
+                                </td>
+                                <td>{{ a }}</td>
+                                <td>{{ b }}</td>
+                                <td>{{ c }}</td>
+                                <td>{{ d }}</td>
+                                <td>{{ e }}</td>
+                                <td>{{ f }}</td>
+                                <td>{{ g }}</td>
+                            </tr>
+                            </tbody>
+                        {% endfor %}
+                        {% csrf_token %}
+                    </form>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+{#<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>#}
+<script>window.jQuery || document.write('<script src="../Static/bootstrap/assets/js/vendor/jquery.min.js"><\/script>')</script>
+<script src="../Static/bootstrap/js/bootstrap.js"></script>
+<!-- Just to make our placeholder images work. Don't actually copy the next line! -->
+<script src="../Static/bootstrap/assets/js/vendor/holder.min.js"></script>
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="../Static/bootstrap/assets/js/ie10-viewport-bug-workaround.js"></script>
+</body>
+</html>

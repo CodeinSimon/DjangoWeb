@@ -1,0 +1,49 @@
+body {
+    pediting-top: 40px;
+    pediting-bottom: 40px;
+    background-color: #eee;
+}
+
+.form-editpage {
+    max-width: 150px;
+    pediting: 15px;
+    margin: 0 auto;
+}
+
+.form-editpage .form-editpage-heading,
+.form-editpage .checkbox {
+    margin-bottom: 10px;
+}
+
+.form-editpage .checkbox {
+    font-weight: normal;
+}
+
+.form-editpage .form-control {
+    position: relative;
+    /*height: auto;*/
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    width: 10%;
+    pediting: 10px;
+    font-size: 16px;
+    left: 50%;
+    top: 50%;
+}
+
+.form-editpage .form-control:focus {
+    z-index: 2;
+}
+
+.form-editpage input[type="text"] {
+    margin-bottom: -1px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.form-editpage input[type="text"] {
+    margin-bottom: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}

@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../Static/bootstrap/assets/fudan_logo.png">
+
+    <title>add page</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../Static/bootstrap/css/bootstrap.css" rel="stylesheet">
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <link href="../Static/bootstrap/assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="../Static/bootstrap/css/home.css" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="../Static/assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="../Static/bootstrap/assets/js/ie-emulation-modes-warning.js"></script>
+    {#    <script src="../Static/bootstrap/js/home.js"></script>#}
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+
+<body>
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <a href="./index.html" style="float: left; margin-left:0px;margin-top: 2px">
+            <img src="../Static/bootstrap/assets/title_logo.png" style="width: 148px; height: 45px">
+        </a>
+    </div>
+</nav>
+<br>
+<br>
+{% if request.path == '/add/schools' %}
+    <div class="container">
+        <form class="form-addpage" id="add_school_form" method="post" action="/add/schools">
+            {% csrf_token %}
+            <h2 class="form-addpage-heading" style="text-align: center">Add School</h2>
+            <input type="text" name="inputSchoolID" class="form-control"
+                   style="width: 20%;text-align: center;margin:0 auto;" placeholder="School ID (var 4)" maxlength="4"
+                   required autofocus>
+            <input type="text" name="inputSchoolName" class="form-control"
+                   style="width: 20%;text-align: center;margin:0 auto;" placeholder="School Name" required>
+            <br>
+            <button type="submit" class="btn btn-success" style="float: left; margin-left:40%;">Save</button>
+            <button type="reset" class="btn btn-info" style="float: left; margin-left: 25px;">Clear</button>
+            <a href="../../home.html" onclick="showSchool();" class="btn btn-warning"
+               style="float: left; margin-left:25px">Back</a>
+            {% csrf_token %}
+        </form>
+
+    </div>
+{% endif %}
+
+{% if request.path == '/add/majors' %}
+    <div class="container">
+        <form class="form-addpage" id="add_school_form" method="post" action="/add/majors">
+            {% csrf_token %}
+            <h2 class="form-addpage-heading" style="text-align: center">Add Major</h2>
+            <input type="text" name="inputMajorID" class="form-control"
+                   style="width: 20%;text-align: center;margin:0 auto;" placeholder="Major ID (var 8)" maxlength="8"
+                   required autofocus>
+            <input type="text" name="inputMajorName" class="form-control"
+                   style="width: 20%;text-align: center;margin:0 auto;" placeholder="Major Name" required>
+            <input type="text" name="inputSchoolID" class="form-control" maxlength="8"
+                   style="width: 20%;text-align: center;margin:0 auto;" placeholder="School ID" required autofocus>
+            <br>
+            <button type="submit" class="btn btn-success" style="float: left; margin-left:40%;">Save</button>
+            <button type="reset" class="btn btn-info" style="float: left; margin-left: 25px;">Clear</button>
+            <a href="../../home.html" onclick="showMajor()" class="btn btn-warning"
+               style="float: left; margin-left:25px">Back</a>
+
+            {% csrf_token %}
+        </form>
+
+    </div>
+{% endif %}
+
+{% if request.path == '/add/teachers' %}
+    <div class="container">
+        <form class="form-addpage" id="add_teacher_form" method="post" action="/add/teachers">
+            {% csrf_token %}
+            <h2 class="form-addpage-heading" style="text-align: center">Add Teacher</h2>
+            <input type="text" name="inputTeacherID" class="form-control"
+                   style="width: 20%;text-align: center;margin:0 auto;" placeholder="Teacher ID (var 5)" maxlength="5"
+                   required autofocus>
+            <input type="text" name="inputTeacherName" class="form-control"
+                   style="width: 20%;text-align: center;margin:0 auto;" placeholder="Name" required>
+            <select name="inputTeacherSex" id="id_teacher_sex" class="form-control"
+                    style="width: 20%;text-align: center;margin:0 auto;">
+                <option value="male" selected="">男</option>
+                <option value="female">女</option>
+            </select>
+            <input type="number" name="inputTeacherAge" placeholder="Age"
+                   style="width: 20%;text-align: center;margin:0 auto;" value="40"
+                   class="vIntegerField form-control" required autofocus>
+            <select name="inputTeacherTitle" style="width: 20%;text-align: center;margin:0 auto;" class="form-control">
+                <option value="Assistant">助教</option>
+                <option value="Lecturer" selected="">讲师</option>
+                <option value="Associate Professor">副教授</option>
+                <option value="Professor">教授</option>
+            </select>
+            <input type="number" name="inputTeacherSalary" class="form-control" placeholder="Salary" value="8000.0"
+                   step="any"
+                   style="width: 20%;text-align: center;margin:0 auto;">
+            <input type="text" name="inputTeacherSchoolID" class="form-control" maxlength="4"
+                   style="width: 20%;text-align: center;margin:0 auto;" placeholder="School ID" required autofocus>
+            <br>
+            <br>
+
+            <button type="submit" class="btn btn-success" style="float: left; margin-left:40%;">Save</button>
+            <button type="reset" class="btn btn-info" style="float: left; margin-left: 25px;">Clear</button>
+            <a href="../../home.html" class="btn btn-warning" onclick="showTeacher()"
+               style="float: left; margin-left:25px">Back</a>
+
+            {% csrf_token %}
+        </form>
+
+    </div>
+{% endif %}
+
+
+{% if request.path == '/add/students' %}
+    <div class="container">
+        <form class="form-addpage" id="add_student_form" method="post" action="/add/students">
+            <h2 class="form-addpage-heading" style="text-align: center">Add Student</h2>
+            <input type="text" name="inputStudentID" class="form-control"
+                   style="width: 20%;text-align: center;margin:0 auto;" placeholder="Student ID (var 11)" maxlength="11"
+                   required autofocus>
+            <input type="text" name="inputStudentName" class="form-control"
+                   style="width: 20%;text-align: center;margin:0 auto;" placeholder="Name" required>
+            <select name="inputStudentSex" id="id_student_sex" class="form-control"
+                    style="width: 20%;text-align: center;margin:0 auto;">
+                <option value="male" selected="">男</option>
+                <option value="female">女</option>
+            </select>
+            <input type="number" name="inputStudentAge" placeholder="Age"
+                   style="width: 20%;text-align: center;margin:0 auto;" value="20"
+                   class="vIntegerField form-control" required autofocus>
+            <input type="text" name="inputStudentMajorID" class="form-control" maxlength="8"
+                   style="width: 20%;text-align: center;margin:0 auto;" placeholder="Major ID" required autofocus>
+            <br>
+            <br>
+
+            <button type="submit" class="btn btn-success" style="float: left; margin-left:40%;">Save</button>
+            <button type="reset" class="btn btn-info" style="float: left; margin-left: 25px;">Clear</button>
+            <a href="../../home.html" class="btn btn-warning" onclick="showStudent()"
+               style="float: left; margin-left:25px">Back</a>
+
+            {% csrf_token %}
+        </form>
+
+    </div>
+{% endif %}
+
+{% if request.path == '/add/courses' %}
+    <div class="container">
+        <form class="form-addpage" id="add_course_form" method="post" action="/add/courses">
+            <h2 class="form-addpage-heading" style="text-align: center">Add Course</h2>
+            <input type="text" name="inputCourseID" class="form-control"
+                   style="width: 20%;text-align: center;margin:0 auto;" placeholder="Course ID (var 9)" maxlength="9"
+                   required autofocus>
+            <input type="text" name="inputCourseName" class="form-control"
+                   style="width: 20%;text-align: center;margin:0 auto;" placeholder="Name" required>
+            <input type="text" name="inputCourseClassroomID" class="form-control" maxlength="5"
+                   style="width: 20%;text-align: center;margin:0 auto;" placeholder="Classroom ID" required autofocus>
+            <input type="number" name="inputCourseCapacity" style="width: 20%;text-align: center;margin:0 auto;"
+                   value="40"
+                   class="vIntegerField form-control" required autofocus>
+            <input type="text" name="inputCourseTeacherID" class="form-control" maxlength="5"
+                   style="width: 20%;text-align: center;margin:0 auto;" placeholder="Teacher ID" required autofocus>
+            <br>
+            <br>
+            <button type="submit" class="btn btn-success" style="float: left; margin-left:40%;">Save</button>
+            <button type="reset" class="btn btn-info" style="float: left; margin-left: 25px;">Clear</button>
+            <a href="../../home.html" class="btn btn-warning" onclick="showCourse()"
+               style="float: left; margin-left:25px">Back</a>
+            {% csrf_token %}
+        </form>
+
+    </div>
+{% endif %}
+
+{% if request.path == '/add/classrooms' %}
+    <div class="container">
+        <form class="form-addpage" id="add_course_form" method="post" action="/add/classrooms">
+            <h2 class="form-addpage-heading" style="text-align: center">Add Classroom</h2>
+            <input type="text" name="inputClassroomID" class="form-control"
+                   style="width: 20%;text-align: center;margin:0 auto;" placeholder="Classroom ID (var 5)" maxlength="5"
+                   required autofocus>
+            <input type="number" name="inputClassroomCapacity" style="width: 20%;text-align: center;margin:0 auto;"
+                   value="40"
+                   class="vIntegerField form-control" required autofocus>
+            <br>
+            <br>
+            <button type="submit" class="btn btn-success" style="float: left; margin-left:40%;">Save</button>
+            <button type="reset" class="btn btn-info" style="float: left; margin-left: 25px;">Clear</button>
+            <a href="../../home.html" class="btn btn-warning" onclick="showClassroom()"
+               style="float: left; margin-left:25px">Back</a>
+            {% csrf_token %}
+        </form>
+
+    </div>
+{% endif %}
+
+{% if request.path == '/add/precourses' %}
+    <div class="container">
+        <form class="form-addpage" id="add_precourse_form" method="post" action="/add/precourses">
+            <h2 class="form-addpage-heading" style="text-align: center">Add Precourse</h2>
+            <input type="text" name="inputID" class="form-control"
+                   style="width: 20%;text-align: center;margin:0 auto;" placeholder="ID (var 11)" maxlength="11"
+                   required autofocus>
+            <input type="text" name="inputCurID" class="form-control"
+                   style="width: 20%;text-align: center;margin:0 auto;" placeholder="Cur Course ID (var 9)"
+                   maxlength="9"
+                   required autofocus>
+            <input type="text" name="inputPreID" class="form-control"
+                   style="width: 20%;text-align: center;margin:0 auto;" placeholder="Pre Course ID (var 9)"
+                   maxlength="9"
+                   required autofocus>
+            <br>
+            <br>
+            <button type="submit" class="btn btn-success" style="float: left; margin-left:40%;">Save</button>
+            <button type="reset" class="btn btn-info" style="float: left; margin-left: 25px;">Clear</button>
+            <a href="../../home.html" class="btn btn-warning" onclick="showPreCourse()"
+               style="float: left; margin-left:25px">Back</a>
+            {% csrf_token %}
+        </form>
+    </div>
+{% endif %}
+
+{% if request.path == '/add/scorelists' %}
+    <div class="container">
+        <form class="form-addpage" id="add_scorelist_form" method="post" action="/add/scorelists">
+            <h2 class="form-addpage-heading" style="text-align: center">Add ScoreList</h2>
+            <input type="text" name="inputID" class="form-control"
+                   style="width: 20%;text-align: center;margin:0 auto;" placeholder="ID (var 11)" maxlength="11"
+                   required autofocus>
+            <input type="text" name="inputCID" class="form-control"
+                   style="width: 20%;text-align: center;margin:0 auto;" placeholder="Course ID (var 9)" maxlength="9"
+                   required autofocus>
+            <input type="text" name="inputSID" class="form-control"
+                   style="width: 20%;text-align: center;margin:0 auto;" placeholder="Student ID (var 11)" maxlength="11"
+                   required autofocus>
+            <input type="number" name="inputScore" style="width: 20%;text-align: center;margin:0 auto;"
+                   value="999"
+                   class="vIntegerField form-control" required autofocus readonly>
+            <br>
+            <br>
+            <button type="submit" class="btn btn-success" style="float: left; margin-left:40%;">Save</button>
+            <button type="reset" class="btn btn-info" style="float: left; margin-left: 25px;">Clear</button>
+            <a href="../../home.html" class="btn btn-warning" onclick="showScoreList()"
+               style="float: left; margin-left:25px">Back</a>
+            {% csrf_token %}
+        </form>
+    </div>
+{% endif %}
+
+{% if request.path == '/add/mycourses' %}
+    <div class="container">
+        <form class="form-addpage" id="add_scorelist_form" method="post" action="/add/mycourses">
+            <h2 class="form-addpage-heading" style="text-align: center">Add My Course</h2>
+            <input type="text" class="form-control" style="width: 20%;text-align: center;margin:0 auto;"
+                   name="inputCourseID" maxlength="9" placeholder="Course ID..">
+            <br>
+            <br>
+            <button type="submit" class="btn btn-success" style="float: left; margin-left:40%;">Save</button>
+            <button type="reset" class="btn btn-info" style="float: left; margin-left: 25px;">Clear</button>
+            <a href="../../home.html" class="btn btn-warning" onclick="showMyCourse()"
+               style="float: left; margin-left:25px">Back</a>
+            {% csrf_token %}
+        </form>
+    </div>
+{% endif %}
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+{#<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>#}
+<script>window.jQuery || document.write('<script src="../Static/bootstrap/assets/js/vendor/jquery.min.js"><\/script>')</script>
+<script src="../Static/bootstrap/js/bootstrap.js"></script>
+<!-- Just to make our placeholder images work. Don't actually copy the next line! -->
+<script src="../Static/bootstrap/assets/js/vendor/holder.min.js"></script>
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="../Static/bootstrap/assets/js/ie10-viewport-bug-workaround.js"></script>
+</body>
+</html>

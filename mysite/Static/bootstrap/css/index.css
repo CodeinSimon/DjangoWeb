@@ -1,0 +1,27 @@
+/* Move down content because we have a fixed navbar that is 50px tall */
+body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+    background: #fff url("../assets/bg.jpg");
+    background-size: 100%;
+}
+
+.up-navigator {
+    opacity: 1;
+    background-color: transparent;
+
+}
+
+.down-navigator {
+    background-color: hsla(0, 0%, 30%, .5);
+    color: white;
+    color: hsla(0, 0%, 90%, 1);
+}
+
+.top-navbar {
+    background-color: hsla(0, 0%, 100%, .2);
+}
+button{
+border:none;
+}
+
