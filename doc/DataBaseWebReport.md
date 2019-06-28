@@ -1,6 +1,5 @@
 <center> <font size=5> <b>数据库Web实验报告</b></font>
 </center>
-<p align=right> <strong>聂希瑞 16307130133</strong></p>
 
 [TOC]
 
